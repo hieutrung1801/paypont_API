@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PaypontAPI.Models;
@@ -20,7 +21,7 @@ namespace PaypontAPI.Controllers
         {
             _context = context;
 
-            if (_context.Customer.Count() == 0)
+            if(_context.Customer.Count() == 0)
             {
                 _context.Customer.Add(new Customer() {FirstName = "Test", SureName = "Customer"});
                 _context.SaveChanges();
@@ -28,30 +29,35 @@ namespace PaypontAPI.Controllers
 
         }
 
+
         // GET: api/<controller>
-        [HttpGet(Name = "Customer")]
+        [HttpGet]
         public ActionResult<IEnumerable<Customer>> GetAllCustomer()
         {
             return _context.Customer.ToList();
         }
 
         // GET api/<controller>/5
-        [HttpGet(("{id}"), Name = "GetCustomerById")]
+        [HttpGet("{id}", Name = "GetCustomerById")]
         public ActionResult<Customer> GetCustomerById(int id)
         {
-            var customer = _context.Customer.SingleOrDefault(c => c.Id == id);
+            var customer = _context.Customer.Find(id);
             if (customer == null)
                 return NotFound();
             return customer;
         }
 
         // POST api/<controller>
-        [HttpPost(Name = "Customer")]
-        public IActionResult Create(Customer customer)
+        [HttpPost(Name = "customer")]
+        [AllowAnonymous]
+        [IgnoreAntiforgeryToken]
+        public IActionResult CreateCustomer(Customer customer)
         {
             _context.Customer.Add(customer);
             _context.SaveChanges();
+            
             return CreatedAtRoute("GetCustomerById", new {id = customer.Id}, customer);
+
         }
 
         // PUT api/<controller>/5

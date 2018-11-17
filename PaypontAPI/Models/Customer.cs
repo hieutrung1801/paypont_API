@@ -7,7 +7,7 @@ namespace PaypontAPI.Models
 {
     public class Customer
     {
-        public byte Id { get; set; }
+        public int Id { get; set; }
         public string FirstName { get; set; }
         public string SureName { get; set; }
         public string StreetAddress { get; set; }
