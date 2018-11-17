@@ -23,7 +23,7 @@ namespace PaypontAPI.Controllers
 
             if(_context.Customer.Count() == 0)
             {
-                _context.Customer.Add(new Customer() {FirstName = "Test", SureName = "Customer"});
+                _context.Customer.Add(new Customer() {FirstName = "Test", SurName = "Customer"});
                 _context.SaveChanges();
             }
 
@@ -38,8 +38,8 @@ namespace PaypontAPI.Controllers
         }
 
         // GET api/<controller>/5
-        [HttpGet("{id}", Name = "GetCustomerById")]
-        public ActionResult<Customer> GetCustomerById(byte id)
+        [HttpGet("{id:int}", Name = "GetById")]
+        public ActionResult<Customer> GetById(int id)
         {
             var customer = _context.Customer.Find(id);
             if (customer == null)
@@ -47,6 +47,24 @@ namespace PaypontAPI.Controllers
             return customer;
         }
 
+        // Get api/<controller>/{firstname}
+        [HttpGet("{surName}")]
+        public ActionResult<List<Customer>> GetByName(string surName)
+        {
+            var result = new List<Customer>();
+            var customerList = _context.Customer.ToList();
+            foreach(var customer in customerList)
+            {
+
+                if (string.Equals(customer.SurName, surName))
+                    result.Add(customer);
+            }
+
+            if (result.Count == 0)
+                return NotFound();
+            
+            return result;
+        }
         // POST api/<controller>
         [HttpPost(Name = "customer")]
         [IgnoreAntiforgeryToken]
@@ -55,7 +73,7 @@ namespace PaypontAPI.Controllers
             _context.Customer.Add(customer);
             _context.SaveChanges();
             
-            return CreatedAtRoute("GetCustomerById", new {id = customer.Id}, customer);
+            return CreatedAtRoute("GetById", new {id = customer.Id}, customer);
 
         }
 
