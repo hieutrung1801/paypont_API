@@ -39,7 +39,7 @@ namespace PaypontAPI.Controllers
 
         // GET api/<controller>/5
         [HttpGet("{id}", Name = "GetCustomerById")]
-        public ActionResult<Customer> GetCustomerById(int id)
+        public ActionResult<Customer> GetCustomerById(byte id)
         {
             var customer = _context.Customer.Find(id);
             if (customer == null)
@@ -49,7 +49,6 @@ namespace PaypontAPI.Controllers
 
         // POST api/<controller>
         [HttpPost(Name = "customer")]
-        [AllowAnonymous]
         [IgnoreAntiforgeryToken]
         public IActionResult CreateCustomer(Customer customer)
         {
