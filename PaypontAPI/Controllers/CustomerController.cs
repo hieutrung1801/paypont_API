@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PaypontAPI.Models;
@@ -13,6 +14,7 @@ namespace PaypontAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("CorsPolicy")]
     public class CustomerController : ControllerBase
     {
         private PaypontDbContext _context;
@@ -31,7 +33,9 @@ namespace PaypontAPI.Controllers
 
 
         // GET: api/<controller>
+
         [HttpGet]
+        [EnableCors("CorsPolicy")]
         public ActionResult<IEnumerable<Customer>> GetAllCustomer()
         {
             return _context.Customer.ToList();
@@ -49,6 +53,7 @@ namespace PaypontAPI.Controllers
 
         // Get api/<controller>/{firstname}
         [HttpGet("{surName}")]
+        [EnableCors("CorsPolicy")]
         public ActionResult<List<Customer>> GetByName(string surName)
         {
             var result = new List<Customer>();
@@ -68,6 +73,8 @@ namespace PaypontAPI.Controllers
         // POST api/<controller>
         [HttpPost(Name = "customer")]
         [IgnoreAntiforgeryToken]
+        [EnableCors("CorsPolicy")]
+
         public IActionResult CreateCustomer(Customer customer)
         {
             _context.Customer.Add(customer);
@@ -79,12 +86,16 @@ namespace PaypontAPI.Controllers
 
         // PUT api/<controller>/5
         [HttpPut("{id}")]
+        [EnableCors("CorsPolicy")]
+
         public void Put(int id, [FromBody]string value)
         {
         }
 
         // DELETE api/<controller>/5
         [HttpDelete("{id}")]
+        [EnableCors("CorsPolicy")]
+
         public void Delete(int id)
         {
         }
