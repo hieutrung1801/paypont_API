@@ -1,1 +1,2 @@
-# paypont_API
+# Paypont API
+Source code for the API
