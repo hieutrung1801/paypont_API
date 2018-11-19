@@ -31,13 +31,13 @@ namespace PaypontAPI
             // Add service and create Policy with options
             services.AddCors(options =>
             {
+                // Add a new cors policy
                 options.AddPolicy("CorsPolicy",
                     builder => builder.AllowAnyOrigin()
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials() );
             });
-            //services.AddDbContext<PaypontDbContext>(opt => opt.UseInMemoryDatabase("Customer"));  
             services.AddDbContext<PaypontDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("PaypontDbContext")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -58,7 +58,7 @@ namespace PaypontAPI
             {
                 app.UseHsts();
             }
-            // global policy - assign here or on each controller
+            // Global policy
             app.UseCors("CorsPolicy");
             app.UseHttpsRedirection();
             app.UseMvc();

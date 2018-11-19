@@ -22,6 +22,7 @@ namespace PaypontAPI.Controllers
         {
             _context = context;
 
+            // Adding a default customer if all customers are removed.
             if(_context.Customer.Count() == 0)
             {
                 _context.Customer.Add(new Customer() {FirstName = "Test", SurName = "Customer"});
@@ -32,7 +33,6 @@ namespace PaypontAPI.Controllers
 
 
         // GET: api/<controller>
-
         [HttpGet]
         public ActionResult<IEnumerable<Customer>> GetAllCustomer()
         {
@@ -49,7 +49,7 @@ namespace PaypontAPI.Controllers
             return customer;
         }
 
-        // Get api/<controller>/{firstname}
+        // Get api/<controller>/{surname}
         [HttpGet("{surName}")]
         public ActionResult<List<Customer>> GetByName(string surName)
         {
